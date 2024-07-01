@@ -1,6 +1,6 @@
 package com.example.telegram_bot_days_to_new_year;
 
-import com.example.telegram_bot_days_to_new_year.bot.TelegramBotController;
+import com.example.telegram_bot_days_to_new_year.controller_bot.TelegramBotController;
 import lombok.SneakyThrows;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
