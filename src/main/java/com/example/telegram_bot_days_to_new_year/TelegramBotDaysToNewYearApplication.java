@@ -4,6 +4,7 @@ import com.example.telegram_bot_days_to_new_year.controller_bot.TelegramBotContr
 import lombok.SneakyThrows;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
@@ -12,9 +13,10 @@ public class TelegramBotDaysToNewYearApplication {
 
     @SneakyThrows
     public static void main(String[] args) {
-        SpringApplication.run(TelegramBotDaysToNewYearApplication.class, args);
+        ApplicationContext context = SpringApplication.run(TelegramBotDaysToNewYearApplication.class, args);
 
+        TelegramBotController botController = context.getBean(TelegramBotController.class);
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(new TelegramBotController());
+        telegramBotsApi.registerBot(botController);
     }
 }
