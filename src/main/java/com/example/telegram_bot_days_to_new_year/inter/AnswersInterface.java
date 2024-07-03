@@ -6,5 +6,8 @@ public interface AnswersInterface {
     void startAnswer(Long id);
     void leftDaysToNewYear();
     void defaultAnswer(Long id);
-    void stopAnswer(Long id);
+    void unsubscribeAnswer(Long id);
+    void subscribeAnswer(Long id);
+    void quitAnswer(Long id);
+    void blockedUserMessage(Long id);
 }

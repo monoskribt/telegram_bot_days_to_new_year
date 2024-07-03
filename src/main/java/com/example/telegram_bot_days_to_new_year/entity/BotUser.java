@@ -10,15 +10,9 @@ import lombok.Data;
 public class BotUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private boolean userWantToGetInfoAboutDays;
-
-    public BotUser(Long id, boolean userWantToGetInfoAboutDays) {
-        this.id = id;
-        this.userWantToGetInfoAboutDays = userWantToGetInfoAboutDays;
-    }
 
     public BotUser(Long id) {
         this.id = id;
@@ -35,4 +29,5 @@ public class BotUser {
     public void unsubscribe() {
         this.userWantToGetInfoAboutDays = false;
     }
+
 }

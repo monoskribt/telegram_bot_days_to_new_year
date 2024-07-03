@@ -14,9 +14,5 @@ public class TelegramBotDaysToNewYearApplication {
     @SneakyThrows
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(TelegramBotDaysToNewYearApplication.class, args);
-
-        TelegramBotController botController = context.getBean(TelegramBotController.class);
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(botController);
     }
 }
