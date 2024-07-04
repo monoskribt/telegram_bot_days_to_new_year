@@ -4,7 +4,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 public interface AnswersInterface {
     void startAnswer(Long id);
-    void leftDaysToNewYear();
     void defaultAnswer(Long id);
     void unsubscribeAnswer(Long id);
     void subscribeAnswer(Long id);

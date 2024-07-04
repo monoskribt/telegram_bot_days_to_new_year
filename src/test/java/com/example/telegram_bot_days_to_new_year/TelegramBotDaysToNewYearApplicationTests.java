@@ -3,6 +3,7 @@ package com.example.telegram_bot_days_to_new_year;
 
 import com.example.telegram_bot_days_to_new_year.controller_bot.TelegramBotController;
 import com.example.telegram_bot_days_to_new_year.repository.BotUserRepository;
+import com.example.telegram_bot_days_to_new_year.services.TelegramBotAnswers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,6 +27,9 @@ class TelegramBotDaysToNewYearApplicationTests {
     @InjectMocks
     private TelegramBotController telegramBotController;
 
+    @InjectMocks
+    private TelegramBotAnswers telegramBotAnswers;
+
     @BeforeEach
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
@@ -47,7 +51,7 @@ class TelegramBotDaysToNewYearApplicationTests {
         telegramBotController.onUpdateReceived(update);
 
         verify(botUserRepository, times(1)).existsById(645729166L);
-        verify(telegramBotController, times(1)).startAnswer(645729166L);
+        verify(telegramBotAnswers, times(1)).startAnswer(645729166L);
     }
 
 }
