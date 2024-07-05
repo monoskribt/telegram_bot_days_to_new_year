@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    depends_on:
+      - db
+    image: telegram_bot_days_to_new_year_image
+    container_name: telegram_bot_days_to_new_year_container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8181:8181"
+    environment:
+      SERVER_PORT: 8181
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/bot_users
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 02072024Developer
+
+
+  db:
+    image: mysql
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: bot_users
+      MYSQL_ROOT_PASSWORD: 02072024Developer
+    ports:
+      - "3307:3306"
+    expose:
+      - "3307"
