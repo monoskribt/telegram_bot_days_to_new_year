@@ -1,6 +1,6 @@
 package com.example.telegram_bot_days_to_new_year.entity;
 
-import com.example.telegram_bot_days_to_new_year.enums.SubscriptionStatusDaysLeft;
+import com.example.telegram_bot_days_to_new_year.enums.SubsStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,23 +14,23 @@ public class BotUser {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(255) default 'SUBSCRIBE'")
-    private SubscriptionStatusDaysLeft subscriptionStatus;
+    private SubsStatus subscriptionStatus;
 
     public BotUser(Long id) {
         this.id = id;
-        this.subscriptionStatus = SubscriptionStatusDaysLeft.SUBSCRIBE;
+        this.subscriptionStatus = SubsStatus.SUBSCRIBE;
     }
 
     public BotUser() {
-        this.subscriptionStatus = SubscriptionStatusDaysLeft.SUBSCRIBE;
+        this.subscriptionStatus = SubsStatus.SUBSCRIBE;
     }
 
     public void subscribe() {
-        this.subscriptionStatus = SubscriptionStatusDaysLeft.SUBSCRIBE;
+        this.subscriptionStatus = SubsStatus.SUBSCRIBE;
     }
 
     public void unsubscribe() {
-        this.subscriptionStatus = SubscriptionStatusDaysLeft.UNSUBSCRIBE;
+        this.subscriptionStatus = SubsStatus.UNSUBSCRIBE;
     }
 
 }
