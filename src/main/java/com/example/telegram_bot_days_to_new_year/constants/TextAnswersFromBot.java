@@ -1,5 +1,6 @@
 package com.example.telegram_bot_days_to_new_year.constants;
 
+// would it be better to use enums here?
 public class TextAnswersFromBot {
     public static final String START_TEXT = "Hello, dear user! " +
             "Everyday at 8:00 AM i gonna be inform you as for left days to New Year";
