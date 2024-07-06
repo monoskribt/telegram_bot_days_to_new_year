@@ -13,14 +13,14 @@ public class TelegramBotService {
     BotUserRepository botUserRepository;
 
     public void addUser(Long id) {
-        if(!botUserRepository.existsById(id)) {
+        if (!botUserRepository.existsById(id)) {
             botUserRepository.save(new BotUser(id));
         }
     }
 
     public void deleteUser(Long id) {
         Optional<BotUser> botUserList = botUserRepository.findById(id);
-        if(botUserList.isEmpty()) {
+        if (botUserList.isEmpty()) {
             throw new IllegalArgumentException();
         }
         botUserRepository.deleteById(id);
@@ -28,7 +28,7 @@ public class TelegramBotService {
 
     public void subscribeUser(Long id) {
         BotUser user = botUserRepository.findById(id).orElse(null);
-        if(user != null) {
+        if (user != null) {
             user.subscribe();
             botUserRepository.save(user);
         }
@@ -36,7 +36,7 @@ public class TelegramBotService {
 
     public void unsubscribeUser(Long id) {
         BotUser user = botUserRepository.findById(id).orElse(null);
-        if(user != null) {
+        if (user != null) {
             user.unsubscribe();
             botUserRepository.save(user);
         }
@@ -44,7 +44,7 @@ public class TelegramBotService {
 
     public boolean getUserWithId(Long id) {
         BotUser botUser = botUserRepository.findById(id).orElse(null);
-        if(botUser == null) {
+        if (botUser == null) {
             return false;
         }
         return true;

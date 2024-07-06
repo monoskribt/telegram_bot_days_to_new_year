@@ -1,4 +1,5 @@
 package com.example.telegram_bot_days_to_new_year.controller_bot;
+
 import com.example.telegram_bot_days_to_new_year.config.TelegramBotConfig;
 import com.example.telegram_bot_days_to_new_year.entity.BotUser;
 import com.example.telegram_bot_days_to_new_year.enums.SubscriptionStatusDaysLeft;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -28,32 +30,25 @@ import static com.example.telegram_bot_days_to_new_year.constants.BotCommands.*;
 @Component
 public class TelegramBotController
         extends TelegramLongPollingBot
-        implements HelpersToAnswersInterface
-{
+        implements HelpersToAnswersInterface {
     private static final long PERIOD = TimeUnit.SECONDS.toMillis(10);
     private static final long INITIAL_DELAY = TimeUnit.SECONDS.toMillis(10);
-
+    ConcurrentHashMap<Long, LocalDateTime> blockedUser = new ConcurrentHashMap<>();
     @Autowired
     private BotUserRepository repository;
-
     @Autowired
     private TelegramBotConfig telegramBotConfig;
-
     @Autowired
     private TelegramBotService telegramBotService;
-
     @Lazy
     @Autowired
     private TelegramBotAnswers telegramBotAnswers;
-
-    ConcurrentHashMap<Long, LocalDateTime> blockedUser = new ConcurrentHashMap<>();
 
 
     public TelegramBotController() {
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         scheduledExecutorService.scheduleAtFixedRate(this::leftDaysToNewYear, INITIAL_DELAY, PERIOD, TimeUnit.MILLISECONDS);
     }
-
 
 
     @Override
@@ -74,7 +69,7 @@ public class TelegramBotController
             String messageText = message.getText();
             Long chatId = message.getChatId();
 
-            if(isUserBlocked(chatId)) {
+            if (isUserBlocked(chatId)) {
                 telegramBotAnswers.blockedUserMessage(chatId);
                 return;
             }
@@ -104,11 +99,11 @@ public class TelegramBotController
     @Override
     public boolean isUserBlocked(Long id) {
         LocalDateTime stillBlocked = blockedUser.get(id);
-        if(stillBlocked == null) {
+        if (stillBlocked == null) {
             return false;
         }
 
-        if(LocalDateTime.now().isAfter(stillBlocked)) {
+        if (LocalDateTime.now().isAfter(stillBlocked)) {
             blockedUser.remove(id);
             return false;
         }
@@ -124,7 +119,7 @@ public class TelegramBotController
         List<BotUser> usersId = repository.findAll();
 
         usersId.forEach(user -> {
-            if(user.getSubscriptionStatus() == SubscriptionStatusDaysLeft.SUBSCRIBE) {
+            if (user.getSubscriptionStatus() == SubscriptionStatusDaysLeft.SUBSCRIBE) {
                 telegramBotAnswers.sendMessage(user.getId(), text);
             }
         });

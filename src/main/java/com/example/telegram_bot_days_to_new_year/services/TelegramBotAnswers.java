@@ -7,12 +7,12 @@ import com.example.telegram_bot_days_to_new_year.repository.BotUserRepository;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import static com.example.telegram_bot_days_to_new_year.constants.TextAnswersFromBot.*;
+
 @Service
 public class TelegramBotAnswers implements AnswersInterface {
 
@@ -31,18 +31,13 @@ public class TelegramBotAnswers implements AnswersInterface {
     public void startAnswer(Long id) {
         BotUser botUser = botUserRepository.findById(id).orElse(null);
 
-        if(telegramBotService.getUserWithId(id) &&
-                botUser.getSubscriptionStatus() == SubscriptionStatusDaysLeft.SUBSCRIBE) {
+        if (telegramBotService.getUserWithId(id) &&
+            botUser.getSubscriptionStatus() == SubscriptionStatusDaysLeft.SUBSCRIBE) {
             sendMessage(id, SUBSCRIBED_ALREADY_TEXT);
-        }
-
-        else if (telegramBotService.getUserWithId(id) &&
-                botUser.getSubscriptionStatus() == SubscriptionStatusDaysLeft.UNSUBSCRIBE)
-        {
+        } else if (telegramBotService.getUserWithId(id) &&
+                   botUser.getSubscriptionStatus() == SubscriptionStatusDaysLeft.UNSUBSCRIBE) {
             sendMessage(id, UNSUBSCRIBE_WITHOUT_MAIN_PATH_TEXT);
-        }
-
-        else {
+        } else {
             sendMessage(id, START_TEXT);
 
             telegramBotService.addUser(id);

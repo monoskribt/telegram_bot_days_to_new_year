@@ -2,7 +2,6 @@ package com.example.telegram_bot_days_to_new_year.entity;
 
 import com.example.telegram_bot_days_to_new_year.enums.SubscriptionStatusDaysLeft;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
