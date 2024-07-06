@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.example.telegram_bot_days_to_new_year.constants.BotCommands.*;
 
+// maybe it is a bot? but not controller
 @Component
 public class TelegramBotController
         extends TelegramLongPollingBot

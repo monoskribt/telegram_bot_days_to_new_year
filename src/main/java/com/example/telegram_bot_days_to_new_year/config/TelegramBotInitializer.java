@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-
+// maybe it would be better to move it to the bot folder?
 @Component
 public class TelegramBotInitializer {
     private final TelegramBotController telegramBotController;
