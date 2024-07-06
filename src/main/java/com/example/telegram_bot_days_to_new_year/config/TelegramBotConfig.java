@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-@Configuration
-@Data
-@PropertySource("application.properties")
+// do you actually need it?
+//@Configuration
+//@Data
+//@PropertySource("application.properties")
+
+// please move this file to props folder and name it like TelegramBotProps (you can use @ConfigurationProperties with id to your property set)
 public class TelegramBotConfig {
     @Value("${bot.name}")
     private String botName;
@@ -15,3 +18,5 @@ public class TelegramBotConfig {
     @Value("${bot.token}")
     private String botToken;
 }
+
+
