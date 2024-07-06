@@ -1,18 +1,19 @@
 package com.example.telegram_bot_days_to_new_year.controller_bot;
+
 import com.example.telegram_bot_days_to_new_year.config.TelegramBotConfig;
 import com.example.telegram_bot_days_to_new_year.entity.BotUser;
-import com.example.telegram_bot_days_to_new_year.enums.SubscriptionStatusDaysLeft;
-import com.example.telegram_bot_days_to_new_year.inter.HelpersToAnswersInterface;
+import com.example.telegram_bot_days_to_new_year.enums.SubsStatus;
 import com.example.telegram_bot_days_to_new_year.repository.BotUserRepository;
 import com.example.telegram_bot_days_to_new_year.services.TelegramBotAnswers;
-import com.example.telegram_bot_days_to_new_year.services.TelegramBotService;
+import com.example.telegram_bot_days_to_new_year.services.impl.TelegramBotAnswersImpl;
+import com.example.telegram_bot_days_to_new_year.services.impl.TelegramBotService;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -24,35 +25,27 @@ import java.util.concurrent.TimeUnit;
 
 import static com.example.telegram_bot_days_to_new_year.constants.BotCommands.*;
 
+// maybe it is a bot? but not controller
 @Component
-public class TelegramBotController
-        extends TelegramLongPollingBot
-        implements HelpersToAnswersInterface
-{
+public class TelegramBotController extends TelegramLongPollingBot {
     private static final long PERIOD = TimeUnit.SECONDS.toMillis(10);
     private static final long INITIAL_DELAY = TimeUnit.SECONDS.toMillis(10);
-
-    @Autowired
-    private BotUserRepository repository;
-
-    @Autowired
-    private TelegramBotConfig telegramBotConfig;
-
-    @Autowired
-    private TelegramBotService telegramBotService;
-
-    @Lazy
-    @Autowired
-    private TelegramBotAnswers telegramBotAnswers;
-
-    ConcurrentHashMap<Long, LocalDateTime> blockedUser = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, LocalDateTime> blockedUser = new ConcurrentHashMap<>();
+    private final BotUserRepository repository;
+    private final TelegramBotConfig telegramBotConfig;
+    private final TelegramBotService telegramBotService;
+    private final TelegramBotAnswers telegramBotAnswers;
 
 
-    public TelegramBotController() {
+    // it is not great solution to use deprecated things
+    public TelegramBotController(BotUserRepository repository, TelegramBotConfig telegramBotConfig, TelegramBotService telegramBotService, TelegramBotAnswersImpl telegramBotAnswers) {
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         scheduledExecutorService.scheduleAtFixedRate(this::leftDaysToNewYear, INITIAL_DELAY, PERIOD, TimeUnit.MILLISECONDS);
+        this.repository = repository;
+        this.telegramBotConfig = telegramBotConfig;
+        this.telegramBotService = telegramBotService;
+        this.telegramBotAnswers = telegramBotAnswers;
     }
-
 
 
     @Override
@@ -73,7 +66,7 @@ public class TelegramBotController
             String messageText = message.getText();
             Long chatId = message.getChatId();
 
-            if(isUserBlocked(chatId)) {
+            if (isUserBlocked(chatId)) {
                 telegramBotAnswers.blockedUserMessage(chatId);
                 return;
             }
@@ -100,22 +93,22 @@ public class TelegramBotController
         }
     }
 
-    @Override
+    // do you use this method outside of this class? (private key)
     public boolean isUserBlocked(Long id) {
         LocalDateTime stillBlocked = blockedUser.get(id);
-        if(stillBlocked == null) {
+        if (stillBlocked == null) {
             return false;
         }
 
-        if(LocalDateTime.now().isAfter(stillBlocked)) {
+        if (LocalDateTime.now().isAfter(stillBlocked)) {
             blockedUser.remove(id);
             return false;
         }
         return true;
     }
 
+    // do you use this method outside of this class? (private key)
     @SneakyThrows
-    @Override
     public void leftDaysToNewYear() {
         long daysTo = helperDaysToNewYear();
         String text = "Days left to New Year: *" + daysTo + "*";
@@ -123,13 +116,13 @@ public class TelegramBotController
         List<BotUser> usersId = repository.findAll();
 
         usersId.forEach(user -> {
-            if(user.getSubscriptionStatus() == SubscriptionStatusDaysLeft.SUBSCRIBE) {
+            if (user.getSubscriptionStatus() == SubsStatus.SUBSCRIBE) {
                 telegramBotAnswers.sendMessage(user.getId(), text);
             }
         });
     }
 
-    @Override
+    // do you use this method outside of this class? (private key)
     public long helperDaysToNewYear() {
         LocalDate today = LocalDate.now();
         LocalDate nextNewYear = LocalDate.of(today.getYear() + 1, 1, 1);
