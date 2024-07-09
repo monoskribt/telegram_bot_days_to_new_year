@@ -5,7 +5,6 @@ import com.example.telegram_bot_days_to_new_year.entity.BotUser;
 import com.example.telegram_bot_days_to_new_year.services.impl.TelegramBotAnswersImpl;
 import com.example.telegram_bot_days_to_new_year.services.impl.TelegramBotService;
 import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -21,7 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.example.telegram_bot_days_to_new_year.constants.BotCommands.*;
 
 
-@Component
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramBotProps telegramBotProps;
