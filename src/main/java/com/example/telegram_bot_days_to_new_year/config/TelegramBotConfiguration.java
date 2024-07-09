@@ -1,5 +1,6 @@
-package com.example.telegram_bot_days_to_new_year.bot;
+package com.example.telegram_bot_days_to_new_year.config;
 
+import com.example.telegram_bot_days_to_new_year.bot.TelegramBot;
 import com.example.telegram_bot_days_to_new_year.props.TelegramBotProps;
 import com.example.telegram_bot_days_to_new_year.services.impl.TelegramBotAnswersImpl;
 import com.example.telegram_bot_days_to_new_year.services.impl.TelegramBotService;

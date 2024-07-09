@@ -14,12 +14,15 @@ import static com.example.telegram_bot_days_to_new_year.enums.TextAnswersFromBot
 @Service
 public class TelegramBotAnswersImpl implements AnswersInterface {
 
-    @Autowired
-    private TelegramBotService telegramBotService;
+    private final TelegramBotService telegramBotService;
 
     @Autowired
     @Lazy
     private AbsSender absSender;
+
+    public TelegramBotAnswersImpl(TelegramBotService telegramBotService) {
+        this.telegramBotService = telegramBotService;
+    }
 
     @Override
     public void startAnswer(Long id) {
