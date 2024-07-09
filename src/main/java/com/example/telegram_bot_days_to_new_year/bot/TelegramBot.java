@@ -4,10 +4,10 @@ import com.example.telegram_bot_days_to_new_year.props.TelegramBotProps;
 import com.example.telegram_bot_days_to_new_year.entity.BotUser;
 import com.example.telegram_bot_days_to_new_year.services.impl.TelegramBotAnswersImpl;
 import com.example.telegram_bot_days_to_new_year.services.impl.TelegramBotService;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -22,7 +22,6 @@ import static com.example.telegram_bot_days_to_new_year.constants.BotCommands.*;
 
 
 @Component
-@RequiredArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramBotProps telegramBotProps;
@@ -32,15 +31,18 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final ConcurrentHashMap<Long, LocalDateTime> blockedUser = new ConcurrentHashMap<>();
 
 
+    public TelegramBot(DefaultBotOptions options, TelegramBotProps telegramBotProps, TelegramBotService telegramBotService, TelegramBotAnswersImpl telegramBotAnswers) {
+        super(options, telegramBotProps.getToken());
+        this.telegramBotProps = telegramBotProps;
+        this.telegramBotService = telegramBotService;
+        this.telegramBotAnswers = telegramBotAnswers;
+    }
+
+
 
     @Override
     public String getBotUsername() {
         return telegramBotProps.getName();
-    }
-
-    @Override
-    public String getBotToken() {
-        return telegramBotProps.getToken();
     }
 
     @Override
